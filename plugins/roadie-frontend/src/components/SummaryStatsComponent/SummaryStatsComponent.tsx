@@ -40,7 +40,7 @@ export const DenseTable = ({ issues }: DenseTableProps) => {
 
 export const SummaryStatsComponent = () => {
   const { value, loading, error } = useAsync(async (): Promise<Issue[]> => {
-    const response = await fetch('https://localhost:7000/api/ticketing/projects/3/issues/');
+    const response = await fetch('http://localhost:7000/api/ticketing/projects/3/issues/');
     const data = await response.json();
     return data.results;
   }, []);

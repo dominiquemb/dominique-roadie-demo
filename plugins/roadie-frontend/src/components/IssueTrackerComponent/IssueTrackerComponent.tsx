@@ -15,6 +15,9 @@ import { SummaryStatsComponent } from '../SummaryStatsComponent';
 
 export const IssueTrackerComponent = () => {
   const { entity, loading, error } = useEntity();
+  const { metadata } = entity;
+  const { annotations } = metadata;
+  const projectId = annotations && annotations['ackstage.io/project-id'] ? annotations['ackstage.io/project-id'] : false;
 
   console.log(entity);
   console.log(loading);
@@ -34,12 +37,9 @@ export const IssueTrackerComponent = () => {
         <Grid item>
           <InfoCard title="Summary Stats">
             <Typography variant="body1">
-              <SummaryStatsComponent />
+              <SummaryStatsComponent projectId={projectId} />
             </Typography>
           </InfoCard>
-        </Grid>
-        <Grid item>
-          <ExampleFetchComponent />
         </Grid>
       </Grid>
     </Content>
