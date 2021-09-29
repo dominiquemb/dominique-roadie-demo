@@ -58,11 +58,11 @@ export async function createRouter(
         res.status(501).send('Project ID missing');
       })
       .get('/projects/:projectId/issues', async (_req, res) => {
-        const { params } = _req;
+        const { params, query } = _req;
         const { projectId } = params;
         if (projectId) {
           try {
-          const issuesByProjectId = await projectStore.getIssuesForProject(parseInt(projectId));
+          const issuesByProjectId = await projectStore.getIssuesForProject(parseInt(projectId), query);
           res.status(200).send(issuesByProjectId);
           } catch(err) {
             res.status(501).send(`Error: ${err}`);

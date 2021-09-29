@@ -44,9 +44,9 @@ export class ProjectsStore {
     return project;
   };
 
-  getIssuesForProject = async(projectId: number): Promise<Issue[]> => {
+  getIssuesForProject = async(projectId: number, query: any): Promise<Issue[]> => {
     this.logger.info('Retrieving issues from repository by project ID');
-    const issues = (await this.projectRepository.getIssuesForProject(projectId)) as Issue[];
+    const issues = (await this.projectRepository.getIssuesForProject(projectId, query)) as Issue[];
     return issues;
   };
 

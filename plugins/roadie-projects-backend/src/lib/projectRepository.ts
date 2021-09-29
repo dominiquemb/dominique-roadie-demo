@@ -3,9 +3,9 @@ import { Project, Issue } from './types';
 export interface ProjectRepository {
   getProjects(): Promise<Project[]>;
   getProject(projectId: number): Promise<Project|null>
-  getIssuesForProject(projectId: number): Promise<Issue[]>
+  getIssuesForProject(projectId: number, query: any): Promise<Issue[]>
   getIssue(issueId: number): Promise<Issue|null>
-  getIssues(): Promise<Issue[]>
+  getIssues(query:any): Promise<Issue[]>
 }
 
 export class RoadieProjectRepository implements ProjectRepository {
@@ -25,23 +25,51 @@ export class RoadieProjectRepository implements ProjectRepository {
     return foundProject;
   }
 
-  async getIssuesForProject(projectId: number): Promise<Issue[]> {
+  async getIssuesForProject(projectId: number, query: any): Promise<Issue[]> {
     const data = await import('./projects.json');
+    const { assignedTo, type, status } = query;
+
     let issues: Issue[] = [];
     data.projects.forEach((project) => {
       if (project.id === projectId) {
         issues = project.issues;
+
+        if (assignedTo) {
+          issues = issues.filter((issue) => issue.assigned_to === assignedTo);
+        }
+
+        if (type) {
+          issues = issues.filter((issue) => issue.type === type);
+        }
+
+        if (status) {
+          issues = issues.filter((issue) => issue.status === status);
+        }
       }
     })
     return issues;
   }
 
-  async getIssues(): Promise<Issue[]> {
+  async getIssues(query:any): Promise<Issue[]> {
+    const { assignedTo, type, status } = query;
     const data = await import('./projects.json');
-    const issues:Issue[] = [];
+    let issues:Issue[] = [];
+
     data.projects.forEach((project) => {
       project.issues.forEach((issue) => {
-        issues.push(issue)
+        issues.push(issue);
+
+        if (assignedTo) {
+          issues = issues.filter((issue) => issue.assigned_to === assignedTo);
+        }
+
+        if (type) {
+          issues = issues.filter((issue) => issue.type === type);
+        }
+
+        if (status) {
+          issues = issues.filter((issue) => issue.status === status);
+        }
       });
     })
     return issues;
