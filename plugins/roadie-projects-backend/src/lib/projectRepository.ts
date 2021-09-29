@@ -2,6 +2,7 @@ import { Project } from './types';
 
 export interface ProjectRepository {
   getProjects(): Promise<Project[]>;
+  getProjectsById(projectId: number): Promise<Project[]>;
 
   // getProject(id: number): Promise<Project>
   // getIssuesForProject(projectId: number): Promise<Issue[]>
