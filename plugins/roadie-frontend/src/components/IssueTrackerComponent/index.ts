@@ -1,0 +1,1 @@
+export { IssueTrackerComponent } from './IssueTrackerComponent';

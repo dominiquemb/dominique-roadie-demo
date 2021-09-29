@@ -1,0 +1,1 @@
+export { SummaryStatsComponent } from './SummaryStatsComponent';

@@ -12,7 +12,7 @@ export const roadieFrontendPlugin = createPlugin({
 export const RoadieFrontendPage = roadieFrontendPlugin.provide(
   createRoutableExtension({
     component: () =>
-      import('./components/ExampleComponent').then(m => m.ExampleComponent),
+      import('./components/IssueTrackerComponent').then(m => m.IssueTrackerComponent),
     mountPoint: rootRouteRef,
   }),
 );

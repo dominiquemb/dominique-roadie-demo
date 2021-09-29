@@ -1,12 +1,12 @@
 import React from 'react';
-import { ExampleComponent } from './ExampleComponent';
+import { IssueTrackerComponent } from './IssueTrackerComponent';
 import { ThemeProvider } from '@material-ui/core';
 import { lightTheme } from '@backstage/theme';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { msw, renderInTestApp } from '@backstage/test-utils';
 
-describe('ExampleComponent', () => {
+describe('IssueTrackerComponent', () => {
   const server = setupServer();
   // Enable sane handlers for network requests
   msw.setupDefaultHandlers(server);
@@ -21,7 +21,7 @@ describe('ExampleComponent', () => {
   it('should render', async () => {
     const rendered = await renderInTestApp(
       <ThemeProvider theme={lightTheme}>
-        <ExampleComponent />
+        <IssueTrackerComponent />
       </ThemeProvider>,
     );
     expect(rendered.getByText('Welcome to roadie-frontend!')).toBeInTheDocument();

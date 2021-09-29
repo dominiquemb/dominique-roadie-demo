@@ -11,8 +11,9 @@ import {
 } from '@backstage/core';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { ExampleFetchComponent } from '../ExampleFetchComponent';
+import { SummaryStatsComponent } from '../SummaryStatsComponent';
 
-export const ExampleComponent = () => {
+export const IssueTrackerComponent = () => {
   const { entity, loading, error } = useEntity();
 
   console.log(entity);
@@ -33,7 +34,7 @@ export const ExampleComponent = () => {
         <Grid item>
           <InfoCard title="Summary Stats">
             <Typography variant="body1">
-              All content should be wrapped in a card like this.
+              <SummaryStatsComponent />
             </Typography>
           </InfoCard>
         </Grid>
