@@ -16,7 +16,7 @@
 
 import { Logger } from 'winston';
 import { ProjectRepository } from './projectRepository';
-import { Project } from './types';
+import { Project, Issue } from './types';
 
 interface ProjectsStoreOptions {
   logger: Logger;
@@ -42,5 +42,12 @@ export class ProjectsStore {
     this.logger.info('Retrieving projects from repository by ID');
     const projects = (await this.projectRepository.getProjectsById(projectId)) as Project[];
     return projects;
+  };
+
+
+  getIssuesByProjectId = async(projectId: number): Promise<Issue[]> => {
+    this.logger.info('Retrieving issues from repository by project ID');
+    const issues = (await this.projectRepository.getIssuesByProjectId(projectId)) as Issue[];
+    return issues;
   };
 }
