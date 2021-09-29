@@ -27,7 +27,7 @@ export class RoadieProjectRepository implements ProjectRepository {
 
   async getIssuesForProject(projectId: number, query: any): Promise<Issue[]> {
     const data = await import('./projects.json');
-    const { assignedTo, type, status } = query;
+    const { title, description, assignedTo, createdBy, type, status } = query;
 
     let issues: Issue[] = [];
     data.projects.forEach((project) => {
@@ -45,13 +45,25 @@ export class RoadieProjectRepository implements ProjectRepository {
         if (status) {
           issues = issues.filter((issue) => issue.status === status);
         }
+
+        if (title) {
+          issues = issues.filter((issue) => issue.title.toLowerCase().indexOf(title) > -1);
+        }
+
+        if (description) {
+          issues = issues.filter((issue) => issue.description.toLowerCase().indexOf(description) > -1);
+        }
+
+        if (createdBy) {
+          issues = issues.filter((issue) => issue.created_by === createdBy);
+        }
       }
     })
     return issues;
   }
 
   async getIssues(query:any): Promise<Issue[]> {
-    const { assignedTo, type, status } = query;
+    const { title, description, assignedTo, createdBy, type, status } = query;
     const data = await import('./projects.json');
     let issues:Issue[] = [];
 
@@ -70,8 +82,20 @@ export class RoadieProjectRepository implements ProjectRepository {
         if (status) {
           issues = issues.filter((issue) => issue.status === status);
         }
+
+        if (title) {
+          issues = issues.filter((issue) => issue.title.toLowerCase().indexOf(title) > -1);
+        }
+
+        if (description) {
+          issues = issues.filter((issue) => issue.description.toLowerCase().indexOf(description) > -1);
+        }
+
+        if (createdBy) {
+          issues = issues.filter((issue) => issue.created_by === createdBy);
+        }
       });
-    })
+    });
     return issues;
   }
 

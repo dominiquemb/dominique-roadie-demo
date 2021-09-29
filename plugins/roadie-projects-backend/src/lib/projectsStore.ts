@@ -56,9 +56,9 @@ export class ProjectsStore {
     return issue;
   };
 
-  getIssues = async(): Promise<Issue[]> => {
+  getIssues = async(query: any): Promise<Issue[]> => {
     this.logger.info('Retrieving issues');
-    const issues = (await this.projectRepository.getIssues()) as Issue[];
+    const issues = (await this.projectRepository.getIssues(query)) as Issue[];
     return issues;
   };
 }
