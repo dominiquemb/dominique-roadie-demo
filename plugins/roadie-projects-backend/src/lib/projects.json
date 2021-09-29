@@ -75,6 +75,44 @@
           "created_at": "2021-02-15T13:43:35.484Z"
         }
       ]
+    },
+    {
+      "id": 3,
+      "name": "audio-project",
+      "owner": "user:guest",
+      "url": "https://roadie.io",
+      "issues": [
+        {
+          "id": 7,
+          "type": "bug",
+          "title": "No audio on iPhone SE",
+          "description": "When I click play, I don't hear any audio on an iPhone SE",
+          "status": "inprogress",
+          "assigned_to": "guest",
+          "created_by": "guest",
+          "created_at": "2021-09-28T13:43:35.484Z"
+        },
+        {
+          "id": 8,
+          "type": "bug",
+          "title": "The favourites button is broken",
+          "description": "Cannot save a song to favourites",
+          "status": "open",
+          "assigned_to": "guest",
+          "created_by": "guest",
+          "created_at": "2021-09-28T13:43:35.484Z"
+        },
+        {
+          "id": 9,
+          "type": "task",
+          "title": "Add CTA on homepage",
+          "description": "Add 'learn more' button on the homepage",
+          "status": "open",
+          "assigned_to": "guest",
+          "created_by": "guest",
+          "created_at": "2021-02-28T13:43:35.484Z"
+        }
+      ]
     }
   ]
 }
