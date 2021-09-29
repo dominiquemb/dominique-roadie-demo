@@ -10,18 +10,15 @@ import {
   SupportButton,
 } from '@backstage/core';
 import { useEntity } from '@backstage/plugin-catalog-react';
-import { ExampleFetchComponent } from '../ExampleFetchComponent';
 import { SummaryStatsComponent } from '../SummaryStatsComponent';
 
 export const IssueTrackerComponent = () => {
-  const { entity, loading, error } = useEntity();
+  const { entity } = useEntity();
   const { metadata } = entity;
   const { annotations } = metadata;
-  const projectId = annotations && annotations['ackstage.io/project-id'] ? annotations['ackstage.io/project-id'] : false;
+  const projectId = annotations && annotations['backstage.io/project-id'] ? annotations['backstage.io/project-id'] : false;
 
   console.log(entity);
-  console.log(loading);
-  console.log(error);
   
   return (
   <Page themeId="tool">
