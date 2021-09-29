@@ -38,16 +38,21 @@ export class ProjectsStore {
     return projects;
   };
 
-  getProjectsById = async(projectId: number): Promise<Project[]> => {
+  getProject = async(projectId: number): Promise<Project|null> => {
     this.logger.info('Retrieving projects from repository by ID');
-    const projects = (await this.projectRepository.getProjectsById(projectId)) as Project[];
-    return projects;
+    const project = (await this.projectRepository.getProject(projectId)) as Project|null;
+    return project;
   };
 
-
-  getIssuesByProjectId = async(projectId: number): Promise<Issue[]> => {
+  getIssuesForProject = async(projectId: number): Promise<Issue[]> => {
     this.logger.info('Retrieving issues from repository by project ID');
-    const issues = (await this.projectRepository.getIssuesByProjectId(projectId)) as Issue[];
+    const issues = (await this.projectRepository.getIssuesForProject(projectId)) as Issue[];
     return issues;
+  };
+
+  getIssue = async(issueId: number): Promise<Issue|null> => {
+    this.logger.info('Retrieving issues from repository by project ID');
+    const issue = (await this.projectRepository.getIssue(issueId)) as Issue|null;
+    return issue;
   };
 }

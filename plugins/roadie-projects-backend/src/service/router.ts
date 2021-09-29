@@ -49,8 +49,8 @@ export async function createRouter(
         const { projectId } = params;
         if (projectId) {
           try {
-          const projectsById = await projectStore.getProjectsById(parseInt(projectId));
-          res.status(200).send(projectsById);
+          const projectById = await projectStore.getProject(parseInt(projectId));
+          res.status(200).send(projectById);
           } catch(err) {
             res.status(501).send(`Error: ${err}`);
           }
@@ -62,7 +62,7 @@ export async function createRouter(
         const { projectId } = params;
         if (projectId) {
           try {
-          const issuesByProjectId = await projectStore.getIssuesByProjectId(parseInt(projectId));
+          const issuesByProjectId = await projectStore.getIssuesForProject(parseInt(projectId));
           res.status(200).send(issuesByProjectId);
           } catch(err) {
             res.status(501).send(`Error: ${err}`);
@@ -74,7 +74,17 @@ export async function createRouter(
         res.status(501).send('not implemented');
       })
       .get('/issues/:issueId', async (_req, res) => {
-        res.status(501).send('not implemented');
+        const { params } = _req;
+        const { issueId } = params;
+        if (issueId) {
+          try {
+          const issue = await projectStore.getIssue(parseInt(issueId));
+          res.status(200).send(issue);
+          } catch(err) {
+            res.status(501).send(`Error: ${err}`);
+          }
+        }
+        res.status(501).send('Issue ID missing');
       });
 
     return router;

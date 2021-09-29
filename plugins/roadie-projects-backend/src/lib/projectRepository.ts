@@ -2,12 +2,10 @@ import { Project, Issue } from './types';
 
 export interface ProjectRepository {
   getProjects(): Promise<Project[]>;
-  getProjectsById(projectId: number): Promise<Project[]>;
-  getIssuesByProjectId(projectId: number): Promise<Issue[]>;
-
-  // getProject(id: number): Promise<Project>
-  // getIssuesForProject(projectId: number): Promise<Issue[]>
-  // getIssue(issueId: number): Promise<Issue>
+  getProject(projectId: number): Promise<Project|null>
+  getIssuesForProject(projectId: number): Promise<Issue[]>
+  getIssue(issueId: number): Promise<Issue|null>
+  getIssues(): Promise<Issue[]>
 }
 
 export class RoadieProjectRepository implements ProjectRepository {
@@ -16,19 +14,18 @@ export class RoadieProjectRepository implements ProjectRepository {
     return data.projects;
   }
 
-  async getProjectsById(projectId: number): Promise<Project[]> {
+  async getProject(projectId: number): Promise<Project|null> {
     const data = await import('./projects.json');
-    const projectsById = data.projects.filter((project) => {
+    let foundProject = null;
+    data.projects.filter((project) => {
       if (project.id === projectId) {
-        return true;
+        foundProject = project;
       }
-      return false;
     })
-    return projectsById;
+    return foundProject;
   }
 
-
-  async getIssuesByProjectId(projectId: number): Promise<Issue[]> {
+  async getIssuesForProject(projectId: number): Promise<Issue[]> {
     const data = await import('./projects.json');
     let issues: Issue[] = [];
     data.projects.forEach((project) => {
@@ -37,5 +34,29 @@ export class RoadieProjectRepository implements ProjectRepository {
       }
     })
     return issues;
+  }
+
+  async getIssues(): Promise<Issue[]> {
+    const data = await import('./projects.json');
+    const issues:Issue[] = [];
+    data.projects.forEach((project) => {
+      project.issues.forEach((issue) => {
+        issues.push(issue)
+      });
+    })
+    return issues;
+  }
+
+  async getIssue(issueId: number): Promise<Issue|null> {
+    const data = await import('./projects.json');
+    let foundIssue = null;
+    data.projects.forEach((project) => {
+      project.issues.forEach((issue) => {
+        if (issue.id === issueId) {
+          foundIssue = issue;
+        }
+      });
+    })
+    return foundIssue;
   }
 }
