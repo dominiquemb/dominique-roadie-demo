@@ -45,7 +45,17 @@ export async function createRouter(
         res.status(200).send(await projectStore.getProjects());
       })
       .get('/projects/:projectId', async (_req, res) => {
-        res.status(501).send('not implemented');
+        const { params } = _req;
+        const { projectId } = params;
+        if (projectId) {
+          try {
+          const projectsById = await projectStore.getProjectsById(parseInt(projectId));
+          res.status(200).send(projectsById);
+          } catch(err) {
+            res.status(501).send(`Error: ${err}`);
+          }
+        }
+        res.status(501).send('Project ID missing');
       })
       .get('/projects/:projectId/issues', async (_req, res) => {
         res.status(501).send('not implemented');

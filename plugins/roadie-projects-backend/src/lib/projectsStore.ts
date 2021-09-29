@@ -37,4 +37,10 @@ export class ProjectsStore {
     const projects = (await this.projectRepository.getProjects()) as Project[];
     return projects;
   };
+
+  getProjectsById = async(projectId: number): Promise<Project[]> => {
+    this.logger.info('Retrieving projects from repository by ID');
+    const projects = (await this.projectRepository.getProjectsById(projectId)) as Project[];
+    return projects;
+  };
 }

@@ -13,4 +13,15 @@ export class RoadieProjectRepository implements ProjectRepository {
     const data = await import('./projects.json');
     return data.projects;
   }
+
+  async getProjectsById(projectId: number): Promise<Project[]> {
+    const data = await import('./projects.json');
+    const projectsById = data.projects.filter((project) => {
+      if (project.id === projectId) {
+        return true;
+      }
+      return false;
+    })
+    return projectsById;
+  }
 }
