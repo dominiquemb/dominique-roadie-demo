@@ -46,8 +46,10 @@ export const SummaryStatsComponent = (params: { projectId: string|null|false } )
   const [issues, setIssues] = React.useState(null as any);
   const [issueTypes, setIssueTypes] = React.useState([] as string[]);
   const [issueStatuses, setIssueStatuses] = React.useState([] as string[]);
+  const [issueUsers, setIssueUsers] = React.useState([] as string[]);
   const [currentType, setCurrentType] = React.useState('All');
   const [currentStatus, setCurrentStatus] = React.useState('All');
+  const [viewingUser, setViewingUser] = React.useState('All');
 
   const handleTypeChange = (event: any) => {
     setCurrentType(event.target.value);
@@ -55,6 +57,10 @@ export const SummaryStatsComponent = (params: { projectId: string|null|false } )
 
   const handleStatusChange = (event: any) => {
     setCurrentStatus(event.target.value);
+  };
+
+  const handleAssignedToChange = (event: any) => {
+    setViewingUser(event.target.value);
   };
 
   const fetchData = async() => {
@@ -66,6 +72,10 @@ export const SummaryStatsComponent = (params: { projectId: string|null|false } )
 
     if (currentStatus !== 'All') {
       queryStr += `status=${currentStatus}`
+    }
+
+    if (viewingUser !== 'All') {
+      queryStr += `assignedTo=${viewingUser}`
     }
 
     if (queryStr.length > 0) {
@@ -88,6 +98,12 @@ export const SummaryStatsComponent = (params: { projectId: string|null|false } )
           setIssueStatuses(issueStatusesNew);
         }
 
+        if (issueUsers.indexOf(issue.assigned_to) === -1) {
+          let issueUsersNew = issueUsers;
+          issueUsersNew.push(issue.assigned_to);
+          setIssueUsers(issueUsersNew);
+        }
+
         if (issue.status === "inprogress") {
           issue.status = "In Progress"
         }
@@ -107,7 +123,7 @@ export const SummaryStatsComponent = (params: { projectId: string|null|false } )
 
   React.useEffect(() => {
     fetchData();
-  }, [currentType, currentStatus]);
+  }, [currentType, currentStatus, viewingUser]);
 
   // const { value, loading, error } = useAsync(async (): Promise<Issue[]> => {
   //   const response = await fetch(`http://localhost:7000/api/ticketing/projects/${params.projectId}/issues/`);
@@ -143,35 +159,50 @@ export const SummaryStatsComponent = (params: { projectId: string|null|false } )
 
   return (
     <>
-      <div style={{display: 'inline-block'}}>
-      <InputLabel id="type-select">Type</InputLabel>
-      <Select
-        labelId="type-select"
-        id="type-select"
-        value={currentType}
-        label="Type"
-        onChange={handleTypeChange}
-      >
-         <MenuItem value={'All'}>All</MenuItem>
-         {issueTypes.map((issueType, i) => {
-            return <MenuItem value={issueType} key={i}>{issueType}</MenuItem>
-         })}
-      </Select>
+      <div style={{display: 'inline-block', margin: 15}}>
+        <InputLabel id="type-select">Type</InputLabel>
+        <Select
+          labelId="type-select"
+          id="type-select"
+          value={currentType}
+          label="Type"
+          onChange={handleTypeChange}
+        >
+          <MenuItem value={'All'}>All</MenuItem>
+          {issueTypes.map((issueType, i) => {
+              return <MenuItem value={issueType} key={i}>{issueType}</MenuItem>
+          })}
+        </Select>
       </div>
-      <div style={{display: 'inline-block'}}>
-      <InputLabel id="status-select">Status</InputLabel>
-      <Select
-        labelId="status-select"
-        id="status-select"
-        value={currentStatus}
-        label="Status"
-        onChange={handleStatusChange}
-      >
-        <MenuItem value={'All'}>All</MenuItem>
-         {issueStatuses.map((issueStatus, i) => {
-            return <MenuItem value={issueStatus} key={i}>{issueStatus}</MenuItem>
-         })}
-      </Select>
+      <div style={{display: 'inline-block', margin: 15}}>
+        <InputLabel id="status-select">Status</InputLabel>
+        <Select
+          labelId="status-select"
+          id="status-select"
+          value={currentStatus}
+          label="Status"
+          onChange={handleStatusChange}
+        >
+          <MenuItem value={'All'}>All</MenuItem>
+          {issueStatuses.map((issueStatus, i) => {
+              return <MenuItem value={issueStatus} key={i}>{issueStatus}</MenuItem>
+          })}
+        </Select>
+      </div>
+      <div style={{display: 'inline-block', margin: 15}}>
+        <InputLabel id="assignedto-select">Assigned to</InputLabel>
+        <Select
+          labelId="assignedto-select"
+          id="assignedto-select"
+          value={viewingUser}
+          label="Assigned to"
+          onChange={handleAssignedToChange}
+        >
+          <MenuItem value={'All'}>All</MenuItem>
+          {issueUsers.map((issueUser, i) => {
+              return <MenuItem value={issueUser} key={i}>{issueUser}</MenuItem>
+          })}
+        </Select>
       </div>
       <DenseTable issues={issues || []} />
     </>
