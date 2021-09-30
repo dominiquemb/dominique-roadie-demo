@@ -8,6 +8,10 @@ type DenseTableProps = {
   issues: Issue[];
 };
 
+const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 export const DenseTable = ({ issues }: DenseTableProps) => {
 
   const columns: TableColumn[] = [
@@ -45,7 +49,19 @@ export const SummaryStatsComponent = (params: { projectId: string|null|false } )
 
   const { value, loading, error } = useAsync(async (): Promise<Issue[]> => {
     const response = await fetch(`http://localhost:7000/api/ticketing/projects/${params.projectId}/issues/`);
-    const data = await response.json();
+    let data = await response.json();
+    if (data) {
+      data = data.map((issue: Issue) => {
+        if (issue.status === "inprogress") {
+          issue.status = "In Progress"
+        }
+
+        issue.status = capitalizeFirstLetter(issue.status);
+        issue.type = capitalizeFirstLetter(issue.type);
+
+        return issue;
+      });
+    }
     return data;
   }, []);
 
