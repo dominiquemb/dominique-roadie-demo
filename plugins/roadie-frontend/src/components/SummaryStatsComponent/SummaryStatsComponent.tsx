@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, TableColumn, Progress } from '@backstage/core';
+import { Select, InputLabel, MenuItem } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { useAsync } from 'react-use';
 import { Issue } from './types';
@@ -13,7 +14,6 @@ const capitalizeFirstLetter = (string: string) => {
 }
 
 export const DenseTable = ({ issues }: DenseTableProps) => {
-
   const columns: TableColumn[] = [
     { title: 'Type', field: 'type' },
     { title: 'Title', field: 'title' },
@@ -43,33 +43,137 @@ export const DenseTable = ({ issues }: DenseTableProps) => {
 };
 
 export const SummaryStatsComponent = (params: { projectId: string|null|false } ) => {
-  if (!params.projectId) {
-    return <DenseTable issues={[]} />
-  }
+  const [issues, setIssues] = React.useState(null as any);
+  const [issueTypes, setIssueTypes] = React.useState([] as string[]);
+  const [issueStatuses, setIssueStatuses] = React.useState([] as string[]);
+  const [currentType, setCurrentType] = React.useState('All');
+  const [currentStatus, setCurrentStatus] = React.useState('All');
 
-  const { value, loading, error } = useAsync(async (): Promise<Issue[]> => {
-    const response = await fetch(`http://localhost:7000/api/ticketing/projects/${params.projectId}/issues/`);
+  const handleTypeChange = (event: any) => {
+    setCurrentType(event.target.value);
+  };
+
+  const handleStatusChange = (event: any) => {
+    setCurrentStatus(event.target.value);
+  };
+
+  const fetchData = async() => {
+    let queryStr = '';
+
+    if (currentType !== 'All') {
+      queryStr += `type=${currentType}`
+    }
+
+    if (currentStatus !== 'All') {
+      queryStr += `status=${currentStatus}`
+    }
+
+    if (queryStr.length > 0) {
+      queryStr = '?' + queryStr;
+    } 
+
+    const response = await fetch(`http://localhost:7000/api/ticketing/projects/${params.projectId}/issues${queryStr}`);
     let data = await response.json();
     if (data) {
       data = data.map((issue: Issue) => {
+        if (issueTypes.indexOf(issue.type) === -1) {
+          let issueTypesNew = issueTypes;
+          issueTypesNew.push(issue.type);
+          setIssueTypes(issueTypesNew);
+        }
+
+        if (issueStatuses.indexOf(issue.status) === -1) {
+          let issueStatusesNew = issueStatuses;
+          issueStatusesNew.push(issue.status);
+          setIssueStatuses(issueStatusesNew);
+        }
+
         if (issue.status === "inprogress") {
           issue.status = "In Progress"
         }
 
         issue.status = capitalizeFirstLetter(issue.status);
         issue.type = capitalizeFirstLetter(issue.type);
-
         return issue;
       });
     }
-    return data;
-  }, []);
-
-  if (loading) {
-    return <Progress />;
-  } else if (error) {
-    return <Alert severity="error">{error.message}</Alert>;
+    setIssues(data);
   }
 
-  return <DenseTable issues={value || []} />;
+
+  if (!params.projectId) {
+    return <DenseTable issues={[]} />
+  }
+
+  React.useEffect(() => {
+    fetchData();
+  }, [currentType, currentStatus]);
+
+  // const { value, loading, error } = useAsync(async (): Promise<Issue[]> => {
+  //   const response = await fetch(`http://localhost:7000/api/ticketing/projects/${params.projectId}/issues/`);
+  //   let data = await response.json();
+  //   if (data) {
+  //     data = data.map((issue: Issue) => {
+  //       if (issueTypes.indexOf(issue.type) === -1) {
+  //         let issueTypesNew = issueTypes;
+  //         issueTypesNew.push(issue.type);
+  //         setIssueTypes(issueTypesNew);
+  //       }
+
+  //       if (issue.status === "inprogress") {
+  //         issue.status = "In Progress"
+  //       }
+
+  //       issue.status = capitalizeFirstLetter(issue.status);
+  //       issue.type = capitalizeFirstLetter(issue.type);
+
+  //       return issue;
+  //     });
+  //   }
+  //   setIssues(data);
+
+  //   return data;
+  // }, []);
+
+  // if (loading) {
+  //   return <Progress />;
+  // } else if (error) {
+  //   return <Alert severity="error">{error.message}</Alert>;
+  // }
+
+  return (
+    <>
+      <div style={{display: 'inline-block'}}>
+      <InputLabel id="type-select">Type</InputLabel>
+      <Select
+        labelId="type-select"
+        id="type-select"
+        value={currentType}
+        label="Type"
+        onChange={handleTypeChange}
+      >
+         <MenuItem value={'All'}>All</MenuItem>
+         {issueTypes.map((issueType, i) => {
+            return <MenuItem value={issueType} key={i}>{issueType}</MenuItem>
+         })}
+      </Select>
+      </div>
+      <div style={{display: 'inline-block'}}>
+      <InputLabel id="status-select">Status</InputLabel>
+      <Select
+        labelId="status-select"
+        id="status-select"
+        value={currentStatus}
+        label="Status"
+        onChange={handleStatusChange}
+      >
+        <MenuItem value={'All'}>All</MenuItem>
+         {issueStatuses.map((issueStatus, i) => {
+            return <MenuItem value={issueStatus} key={i}>{issueStatus}</MenuItem>
+         })}
+      </Select>
+      </div>
+      <DenseTable issues={issues || []} />
+    </>
+  )
 };
