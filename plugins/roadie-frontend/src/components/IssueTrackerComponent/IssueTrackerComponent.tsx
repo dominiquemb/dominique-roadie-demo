@@ -19,6 +19,7 @@ export const IssueTrackerComponent = () => {
   const projectId = annotations && annotations['backstage.io/project-id'] ? annotations['backstage.io/project-id'] : false;
 
   console.log(entity);
+  console.log(projectId)
   
   return (
   <Page themeId="tool">

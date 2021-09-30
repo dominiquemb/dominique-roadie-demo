@@ -40,13 +40,13 @@ export const DenseTable = ({ issues }: DenseTableProps) => {
 
 export const SummaryStatsComponent = (params: { projectId: string|null|false } ) => {
   if (!params.projectId) {
-    <DenseTable issues={[]} />
+    return <DenseTable issues={[]} />
   }
 
   const { value, loading, error } = useAsync(async (): Promise<Issue[]> => {
     const response = await fetch(`http://localhost:7000/api/ticketing/projects/${params.projectId}/issues/`);
     const data = await response.json();
-    return data.results;
+    return data;
   }, []);
 
   if (loading) {
