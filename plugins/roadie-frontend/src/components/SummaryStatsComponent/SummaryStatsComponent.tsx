@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Table, TableColumn, Progress } from '@backstage/core';
 import { Select, InputLabel, MenuItem } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -16,7 +17,7 @@ const capitalizeFirstLetter = (string: string) => {
 export const DenseTable = ({ issues }: DenseTableProps) => {
   const columns: TableColumn[] = [
     { title: 'Type', field: 'type' },
-    { title: 'Title', field: 'title' },
+    { title: 'Title', field: 'title', render: (row:any) => <Link style={{color: "#0000EE"}} to={`?issueId=${row.id}`}>{row.title}</Link>},
     { title: 'Status', field: 'status' },
     { title: 'Assigned to', field: 'assignedTo' },
     { title: 'Created by', field: 'createdBy' },
@@ -24,6 +25,7 @@ export const DenseTable = ({ issues }: DenseTableProps) => {
 
   const data = issues.map(issue => {
     return {
+      id: issue.id,
       type: issue.type,
       title: issue.title,
       status: issue.status,
