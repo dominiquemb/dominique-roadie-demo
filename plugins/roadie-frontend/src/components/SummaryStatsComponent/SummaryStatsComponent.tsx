@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Table, TableColumn, Progress } from '@backstage/core';
 import { Select, InputLabel, MenuItem } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-import { useAsync } from 'react-use';
 import { Issue } from './types';
 
 type DenseTableProps = {

@@ -14,14 +14,9 @@ import {
 import { useEntity } from '@backstage/plugin-catalog-react';
 
 export const IssueTrackerCommentsComponent = (params: any) => {
-  // const { issueId } = useParams();
   const { entity } = useEntity();
   const [comments, setComments] = React.useState(null as any);
   const [issue, setIssue] = React.useState(null as any);
-  const { metadata } = entity;
-  const { annotations } = metadata;
-  const projectId = annotations && annotations['backstage.io/project-id'] ? annotations['backstage.io/project-id'] : false;
-
   
   const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
