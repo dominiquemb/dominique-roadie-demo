@@ -5,6 +5,12 @@ export type Project = {
   issues: Issue[];
 };
 
+export type Comment = {
+  author: string;
+  timestamp: string;
+  comment: string;
+}
+
 export type Issue = {
   id: number;
   type: string;
@@ -14,4 +20,5 @@ export type Issue = {
   assigned_to: string;
   created_by: string;
   created_at: string;
+  comments?: Comment[];
 };

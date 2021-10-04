@@ -1,0 +1,1 @@
+export { IssueTrackerCommentsComponent } from './IssueTrackerCommentsComponent';

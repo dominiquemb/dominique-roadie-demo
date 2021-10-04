@@ -90,7 +90,10 @@
           "status": "inprogress",
           "assigned_to": "guest",
           "created_by": "guest",
-          "created_at": "2021-09-28T13:43:35.484Z"
+          "created_at": "2021-09-28T13:43:35.484Z",
+          "comments": [
+            {"author": "guest", "timestamp": "2021-09-28T13:43:35.484Z", "comment":"I tested this on Browserstack and couldn't replicate. Can you provide a video recording?"}
+          ]
         },
         {
           "id": 8,
@@ -100,7 +103,10 @@
           "status": "open",
           "assigned_to": "dominique",
           "created_by": "guest",
-          "created_at": "2021-09-28T13:43:35.484Z"
+          "created_at": "2021-09-28T13:43:35.484Z",
+          "comments": [
+            {"author": "guest", "timestamp": "2021-09-28T13:43:35.484Z", "comment":"This is only happening on the latest version of Chrome."}
+          ]
         },
         {
           "id": 9,
@@ -110,7 +116,10 @@
           "status": "open",
           "assigned_to": "guest",
           "created_by": "guest",
-          "created_at": "2021-02-28T13:43:35.484Z"
+          "created_at": "2021-02-28T13:43:35.484Z",
+          "comments": [
+            {"author": "guest", "timestamp": "2021-09-28T13:43:35.484Z", "comment":"The color of the button should be green."}
+          ]
         }
       ]
     }

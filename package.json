@@ -53,5 +53,8 @@
     "transformModules": [
       "@asyncapi/react-component"
     ]
+  },
+  "dependencies": {
+    "moment": "^2.29.1"
   }
 }

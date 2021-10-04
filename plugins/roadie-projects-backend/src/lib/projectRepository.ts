@@ -1,4 +1,4 @@
-import { Project, Issue } from './types';
+import { Project, Issue, Comment } from './types';
 
 export interface ProjectRepository {
   getProjects(): Promise<Project[]>;
@@ -6,6 +6,7 @@ export interface ProjectRepository {
   getIssuesForProject(projectId: number, query: any): Promise<Issue[]>
   getIssue(issueId: number): Promise<Issue|null>
   getIssues(query:any): Promise<Issue[]>
+  getIssueComments(issueId: number): Promise<Comment[]>
 }
 
 export class RoadieProjectRepository implements ProjectRepository {
@@ -102,13 +103,30 @@ export class RoadieProjectRepository implements ProjectRepository {
   async getIssue(issueId: number): Promise<Issue|null> {
     const data = await import('./projects.json');
     let foundIssue = null;
-    data.projects.forEach((project) => {
-      project.issues.forEach((issue) => {
+    data.projects.forEach((project: Project) => {
+      project.issues.forEach((issue: Issue) => {
         if (issue.id === issueId) {
           foundIssue = issue;
         }
       });
     })
     return foundIssue;
+  }
+
+  async getIssueComments(issueId: number): Promise<Comment[]> {
+    const data = await import('./projects.json');
+    let comments: Comment[] = [];
+
+    data.projects.forEach((project: Project) => {
+      project.issues.forEach((issue: Issue) => {
+        if (issue.id === issueId) {
+          if (issue.comments) {
+            comments = issue.comments;
+          }
+        }
+      });
+    });
+
+    return comments;
   }
 }

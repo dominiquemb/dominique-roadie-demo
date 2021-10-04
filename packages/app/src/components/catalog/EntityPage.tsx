@@ -46,7 +46,8 @@ import {
 } from '@backstage/plugin-org';
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
 import { RoadieFrontendPage } from '@internal/plugin-roadie-frontend';
-
+//import { IssueTrackerComments } from '@internal/plugin-roadie-frontend/src/plugin';
+import { IssueTrackerCommentsComponent } from '@internal/plugin-roadie-frontend/src/components/IssueTrackerCommentsComponent';
 
 const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
@@ -111,6 +112,10 @@ const serviceEntityPage = (
     <EntityLayout.Route path="/issue-tracker" title="Issue Tracker">
       <RoadieFrontendPage />
     </EntityLayout.Route>
+
+    {/* <EntityLayout.Route path="/issue-tracker/:issueId/comments" title="">
+      <IssueTrackerCommentsComponent />
+    </EntityLayout.Route> */}
   </EntityLayout>
 );
 

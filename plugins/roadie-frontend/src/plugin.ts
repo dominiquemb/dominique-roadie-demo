@@ -16,3 +16,11 @@ export const RoadieFrontendPage = roadieFrontendPlugin.provide(
     mountPoint: rootRouteRef,
   }),
 );
+
+export const IssueTrackerComments = roadieFrontendPlugin.provide(
+  createRoutableExtension({
+    component: () =>
+      import('./components/IssueTrackerCommentsComponent').then(m => m.IssueTrackerCommentsComponent),
+    mountPoint: rootRouteRef,
+  }),
+);

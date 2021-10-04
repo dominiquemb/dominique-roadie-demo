@@ -92,6 +92,19 @@ export async function createRouter(
           }
         }
         res.status(501).send('Issue ID missing');
+      })
+      .get('/issues/:issueId/comments', async (_req, res) => {
+        const { params } = _req;
+        const { issueId } = params;
+        if (issueId) {
+          try {
+          const issue = await projectStore.getIssueComments(parseInt(issueId));
+          res.status(200).send(issue);
+          } catch(err) {
+            res.status(501).send(`Error: ${err}`);
+          }
+        }
+        res.status(501).send('Issue ID missing');
       });
 
     return router;
