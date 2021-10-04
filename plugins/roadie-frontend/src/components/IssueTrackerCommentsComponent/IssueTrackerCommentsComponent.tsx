@@ -23,10 +23,13 @@ export const IssueTrackerCommentsComponent = (params: any) => {
   const projectId = annotations && annotations['backstage.io/project-id'] ? annotations['backstage.io/project-id'] : false;
 
   
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const fetchIssue = async() => {
     const response = await fetch(`http://localhost:7000/api/ticketing/issues/${params.issueId}`);
     let data = await response.json();
-    console.log(data);
     setIssue(data);
   }
 
@@ -54,42 +57,32 @@ export const IssueTrackerCommentsComponent = (params: any) => {
           <InfoCard title={issue && issue.title ? issue.title : ``}>
               <InfoCard title="Details">
                 <Typography variant="body1">
-                  <div>
-                    <strong>Type: </strong> <span>{ issue && issue.type }</span>
-                  </div>
+                    <strong>Type: </strong> <span>{ issue && issue.type && capitalizeFirstLetter(issue.type) }</span>
                 </Typography>
                 <Typography variant="body1">
-                  <div>
                     <strong>Assigned to: </strong> <span>{ issue && issue.assigned_to }</span>
-                  </div>
                 </Typography>
                 <Typography variant="body1">
-                  <div>
                     <strong>Created by: </strong> <span>{ issue && issue.created_by }</span>
-                  </div>
                 </Typography>
                 <Typography variant="body1">
-                  <div>
-                    <strong>Status: </strong> <span>{ issue && issue.status }</span>
-                  </div>
+                    <strong>Status: </strong> {issue && issue.status && (<span>{ issue.status === 'inprogress' ? `In progress` : capitalizeFirstLetter(issue.status) }</span>)}
                 </Typography>
                 <Typography variant="body1">
-                  <div>
                     <strong>Created: </strong> <span>{ issue && issue.created_at && moment(issue.created_at).format('dddd, MMM Do YYYY') }</span>
-                  </div>
                 </Typography>
                 <br />
                 <Typography variant="body1">
-                  <div>
-                    <div><strong>Description:</strong></div>
-                    <div><span>{ issue && issue.description }</span></div>
-                  </div>
+                  <strong>Description:</strong>
+                </Typography>
+                <Typography variant="body1">
+                  <span>{ issue && issue.description }</span>
                 </Typography>
               </InfoCard>
             <br /><br />
               <InfoCard title="Comments">
-              { comments && comments.map((comment: any) => (
-                    <InfoCard title={<Typography variant="body1"><strong>{comment.author}</strong></Typography>}>
+              { comments && comments.map((comment: any, index: number) => (
+                    <InfoCard key={index} title={<Typography variant="body1"><strong>{comment.author}</strong></Typography>}>
                     <p>{comment.comment}</p>
                     <br />
                     <p><strong>Written </strong><em>{`${moment(comment.timestamp).format('dddd, MMM Do YYYY')} (${moment(comment.timestamp).startOf('hour').fromNow()})`}</em></p>

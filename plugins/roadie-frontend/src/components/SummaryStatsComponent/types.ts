@@ -7,7 +7,7 @@ export type Project = {
 
 export type Comment = {
   author: string;
-  timestamp: string;
+  timestamp?: string;
   comment: string;
 }
 

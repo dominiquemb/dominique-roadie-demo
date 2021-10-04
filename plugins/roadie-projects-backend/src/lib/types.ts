@@ -7,8 +7,8 @@ export type Project = {
 
 export type Comment = {
   author: string;
-  timestamp: string;
   comment: string;
+  timestamp?: string;
 }
 
 export type Issue = {

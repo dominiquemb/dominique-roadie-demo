@@ -54,8 +54,9 @@ export async function createRouter(
           } catch(err) {
             res.status(501).send(`Error: ${err}`);
           }
+        } else {
+          res.status(501).send('Project ID missing');
         }
-        res.status(501).send('Project ID missing');
       })
       .get('/projects/:projectId/issues', async (_req, res) => {
         const { params, query } = _req;
@@ -67,8 +68,9 @@ export async function createRouter(
           } catch(err) {
             res.status(501).send(`Error: ${err}`);
           }
+        } else {
+          res.status(501).send('Project ID missing');
         }
-        res.status(501).send('Project ID missing');
       })
       .get('/issues/', async (_req, res) => {
         const { query } = _req;
@@ -90,8 +92,9 @@ export async function createRouter(
           } catch(err) {
             res.status(501).send(`Error: ${err}`);
           }
+        } else {
+          res.status(501).send('Issue ID missing');
         }
-        res.status(501).send('Issue ID missing');
       })
       .get('/issues/:issueId/comments', async (_req, res) => {
         const { params } = _req;
@@ -103,8 +106,9 @@ export async function createRouter(
           } catch(err) {
             res.status(501).send(`Error: ${err}`);
           }
+        } else {
+          res.status(501).send('Issue ID missing');
         }
-        res.status(501).send('Issue ID missing');
       });
 
     return router;

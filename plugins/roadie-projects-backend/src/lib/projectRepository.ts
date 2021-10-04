@@ -19,6 +19,7 @@ export class RoadieProjectRepository implements ProjectRepository {
     const data = await import('./projects.json');
     let foundProject = null;
     data.projects.filter((project) => {
+      console.log(project.id);
       if (project.id === projectId) {
         foundProject = project;
       }
